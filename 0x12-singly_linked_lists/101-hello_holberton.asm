@@ -1,20 +1,18 @@
 section .data
-    hello: db 'Hello, Holberton', 10 ; null-terminated string with line feed character
-    len: equ $-hello                ; string length
+    fmt: db 'Hello, Holberton\n', 0 ; format string with line feed character
 
 section .text
-    global _start
+    global main
 
-_start:
-    ; write message to stdout
-    mov eax, 1        ; system call number for write
-    mov edi, 1        ; file descriptor for stdout
-    mov esi, hello    ; pointer to message string
-    mov edx, len      ; message length
-    syscall           ; invoke kernel to perform system call
+    extern printf
 
-    ; exit program with status code 0
-    xor eax, eax      ; system call number for exit
-    xor edi, edi      ; exit status code
-    syscall           ; invoke kernel to perform system call
+main:
+    ; call printf function to print message
+    mov rdi, fmt      ; first argument: format string
+    xor eax, eax      ; clear EAX register
+    call printf       ; call printf function
+
+    ; return 0 to indicate successful execution
+    xor eax, eax      ; clear EAX register
+    ret               ; return to the calling function
 
